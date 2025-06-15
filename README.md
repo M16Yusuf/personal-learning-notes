@@ -9,3 +9,10 @@
 # Struktur data 
 
 # Postgresql 
+Sumber pembelajaran dari yt Programmer Zaman Now 
+
+<details> <summary> Click to expand </summary>
+
+https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
+
+</details>
