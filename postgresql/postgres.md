@@ -73,19 +73,19 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 05:41:29 - User Management
 05:53:58 - Backup Database
 
+    > Pro tips ; ada baiknya kita selalu melakukan backup data secara reguler
 
-    Pro tips ; ada baiknya kita selalu melakukan backup data secara reguler
--- untuk backuo database tidak menggunakan perintah SQL, melainkan postgeSQL
--- namanya adalah pg_dump
--- posgresql/pg_dump
--- pg_dump --host=localhost --port=5432 --dbname=belajar --usernaem=m16yusuf --format=plain --file=Users/m16yusuf/backup.sql
+untuk backuo database tidak menggunakan perintah SQL, melainkan postgeSQL, namanya adalah ``pg_dump`` [lebih detailnya](https://www.postgresql.org/docs/current/app-pgdump.html).
 
+```
+pg_dump --host=localhost --port=5432 --dbname=belajar --usernaem=m16yusuf --format=plain --file=Users/m16yusuf/backup.sql
+```
 
 
 
 <!-- materi restore -->
 <details>
-<summary  style='font-weight:bold'>05:59:20 - Restore Database </summary>
+<summary>05:59:20 - Restore Database </summary>
 Buat database baru dengan nama ``belajar_restore``
 
 ```sql 
@@ -101,7 +101,7 @@ lalu restore backup sebelumnya backup.sql ke db belajar_restore dengan perintah 
 
 <!-- materi selanjutnya -->
 <details>
-<summary  style="color:blue;"> 06:03:54 - Materi Selanjutnya</summary>
+<summary> 06:03:54 - Materi Selanjutnya</summary>
 Postgresql dah tamat materi selanjutnya:
 
 * postgresql ACID
@@ -113,7 +113,7 @@ Postgresql dah tamat materi selanjutnya:
 
 
 <details>
-<summary  style='color:blue;'> </summary>
+<summary> </summary>
 </details>
 
 
