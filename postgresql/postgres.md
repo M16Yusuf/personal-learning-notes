@@ -101,7 +101,7 @@ lalu restore backup sebelumnya backup.sql ke db belajar_restore dengan perintah 
 
 <!-- materi selanjutnya -->
 <details>
-<summary  style="font-weight:bold"> 06:03:54 - Materi Selanjutnya</summary>
+<summary  style="color:blue;"> 06:03:54 - Materi Selanjutnya</summary>
 Postgresql dah tamat materi selanjutnya:
 
 * postgresql ACID
@@ -113,7 +113,7 @@ Postgresql dah tamat materi selanjutnya:
 
 
 <details>
-<summary  style='font-weight:bold'> </summary>
+<summary  style='color:blue;'> </summary>
 </details>
 
 
