@@ -70,20 +70,40 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 05:05:28 - Transaction
 05:16:22 - Locking
 05:30:41 - Schema
-05:41:29 - User Management
 
 
-Secara default user utama yang dibuat otomatis saat installasi postgres (nama user linux/mac) itu defaultnya memiliki hak akses super administrator. 
+<!-- materi user management -->
+<details>
+<summary> 05:41:29 - User Management </summary>
+Secara default user utama yang dibuat otomatis saat installasi postgres (nama user linux/mac) itu defaultnya memiliki hak akses super administrator. Proses memanage user hanya bisa dilakukan oleh user yang memiliki hak akses super administrator.
 > pro tip: sebaiknya saat menggunakan postgresSQL aplikasi yang dibuat/diproduction, tidak disarankan menggunakan user utama. lebih baik membuat user baru yang khusus untuk tiap aplikasi dan dibatasi hak aksesnya untuk tiap user tersebut.
 
-SQL membuat dan menghapus user:
+SQL membuat dan menghapus user, detail perintahnya bisa dilihat [disini](https://www.postgresql.org/docs/current/sql-createrole.html). Contoh sql membuat dan menghapus user:
 ```sql
+-- membuat
 create role yusuf;
 create role anisa;
-
+-- menghapus
 drop role yusuf;
 drop role anisa;
 ```
+sql merubah user, detail dokumentasinya bisa dilihat [disini](https://www.postgresql.org/docs/current/sql-alterrole.html). Contoh sql merubah user:
+```sql
+-- merubah password user 
+alter role yusuf login password 'rahasia';
+alter role anisa login password 'rahasia';
+```
+Adapun cara untuk memberikan hak akses pada user yaitu dengan ``grant``, detailnya bisa dilihat [disini](https://www.postgresql.org/docs/current/sql-grant.html). Contoh penggunaan grant:
+```sql
+-- memberi hak akses update, insert, dan select user "yusuf" pada semua table di schema public
+grant insert, update, select on all tables in schema public to yusuf;
+-- memberi hak akses menggunakan dan update sequence "guestbooks_id_seq" untuk user "yusuf"
+grant usage, select, update on guestbooks_id_seq to yusuf;
+-- memberi hak akses insert, update, select user "anisa" pada table customer saja
+grant insert, update, select on customer to anisa;
+```
+</details>
+
 
 
 <!-- Materi backup -->
@@ -97,6 +117,8 @@ Untuk melakukan backup database tidak menggunakan perintah SQL, melainkan menggu
 pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --format=plain --file=Users/yourname/backup.sql
 ```
 </details>
+
+
 
 <!-- materi restore -->
 <details>
@@ -112,6 +134,8 @@ lalu restore backup sebelumnya backup.sql ke db belajar_restore dengan perintah 
 psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname --file=Users/yourname/backup.sql 
 ```
 </details>
+
+
 
 <!-- materi selanjutnya -->
 <details>
