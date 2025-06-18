@@ -68,17 +68,43 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 
 
-05:30:41 - Schema
 
-di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
+<!-- Materi schema -->
+<details>
+<summary>05:30:41 - Schema </summary>
+Di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
+![diagram schema](/postgresql/img/diagram_schema.png)
 
-![diagram schema](/img/diagram_schema.png)
-
-
-
-Di Postgresql kita bisa membuat schema sendiri.
-
-
+Di Postgresql kita bisa membuat schema sendiri, berikut sql untuk schema: 
+```sql 
+--melihat current schema  
+select current_schema();
+show search_path;
+-- membuat dan emnghapus schema
+create schema contoh;
+create schema contoh1;
+-- hati-hati bisa menghapus seluruh schema 
+drop schema contoh;
+drop schema contoh1;
+-- pindah schema dari public ke contoh
+set search_path to contoh;
+```
+Dengan adanya schema ini memungkinkan kita untuk membuat 2 tabel dengan nama yang sama disatu database tetapi berbeda schema. Saat kita membuat table otomatis table akan dibuat pada schema yang sedang dipilih ``current_schema``. Maka ketika kita ingin mengakses ataupun melakukan perubahan pada schema lain dari schema yang digunakan, kita bisa menambahkan nama ``nama_schema.nama_table`` di sqlnya. Misalkan :
+```sql 
+-- current_schema di contoh, ingin melihat table produk di schema public:
+select * from public.products;
+-- currrent_schema di public, ingin membuat table di schema contoh
+create table contoh.products(
+	id serial not null,
+	name varchar(100) not null,
+	primary key(id)
+);
+-- insert ke products yang ada di schema contoh saat berada di schema public
+insert into contoh.products(name)
+values  ('iphone'),
+        ('Play station');
+```
+</details>
 
 
 
