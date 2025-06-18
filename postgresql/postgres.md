@@ -50,17 +50,13 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 <details> 
 <summary  style='font-weight:bold'> 04:25:52 - Many to Many Relationship </summary>
-<ul>
-<li>
-Many to Many adalah relasi dimana ada relasi antara 2 tabel dimana table pertama bisa punya banyak relasi di table kedua, dan table kedua pun punya banyak relasi di table pertama
-</li>
-<li>
-Ini memang sedikit membingungkan, bagaimana caranya bisa relasi kebanyakan secara bolak balik, sedangkan di table kita cuma punya 1 kolom?
-</li>
-<li>
-Contoh relasi many to many adalah relasi antara produk dan penjualan, dimana setiap produk bisa dijual berkali kali, dan setiap penjualan bisa untuk lebih dari satu produk
-</li>
-<ul>
+
+* Many to Many adalah relasi dimana ada relasi antara 2 tabel dimana table pertama bisa punya banyak relasi di table kedua, dan table kedua pun punya banyak relasi di table pertama
+
+
+* Ini memang sedikit membingungkan, bagaimana caranya bisa relasi kebanyakan secara bolak balik, sedangkan di table kita cuma punya 1 kolom?
+
+* Contoh relasi many to many adalah relasi antara produk dan penjualan, dimana setiap produk bisa dijual berkali kali, dan setiap penjualan bisa untuk lebih dari satu produk
 </details>
 
 
@@ -77,16 +73,31 @@ Contoh relasi many to many adalah relasi antara produk dan penjualan, dimana set
 05:41:29 - User Management
 05:53:58 - Backup Database
 
+
+    Pro tips ; ada baiknya kita selalu melakukan backup data secara reguler
+-- untuk backuo database tidak menggunakan perintah SQL, melainkan postgeSQL
+-- namanya adalah pg_dump
+-- posgresql/pg_dump
+-- pg_dump --host=localhost --port=5432 --dbname=belajar --usernaem=m16yusuf --format=plain --file=Users/m16yusuf/backup.sql
+
+
+
+
+<!-- materi restore -->
 <details>
 <summary  style='font-weight:bold'>05:59:20 - Restore Database </summary>
-create database belajar_restore;
-restore backup sebelumnya ke db belajar_restore
+Buat database baru dengan nama ``belajar_restore``
 
-```sql
+```sql 
+create database belajar_restore;
+```
+
+lalu restore backup sebelumnya backup.sql ke db belajar_restore dengan perintah psql :
+
+```
 -- psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname --file=Users/yourname/backup.sql 
 ```
 </details>
-
 
 <!-- materi selanjutnya -->
 <details>
