@@ -71,17 +71,32 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 05:16:22 - Locking
 05:30:41 - Schema
 05:41:29 - User Management
-05:53:58 - Backup Database
 
-    > Pro tips ; ada baiknya kita selalu melakukan backup data secara reguler
 
-untuk backuo database tidak menggunakan perintah SQL, melainkan postgeSQL, namanya adalah ``pg_dump`` [lebih detailnya](https://www.postgresql.org/docs/current/app-pgdump.html).
+Secara default user utama yang dibuat otomatis saat installasi postgres (nama user linux/mac) itu defaultnya memiliki hak akses super administrator. 
+> pro tip: sebaiknya saat menggunakan postgresSQL aplikasi yang dibuat/diproduction, tidak disarankan menggunakan user utama. lebih baik membuat user baru yang khusus untuk tiap aplikasi dan dibatasi hak aksesnya untuk tiap user tersebut.
 
+SQL membuat dan menghapus user:
+```sql
+create role yusuf;
+create role anisa;
+
+drop role yusuf;
+drop role anisa;
 ```
-pg_dump --host=localhost --port=5432 --dbname=belajar --usernaem=m16yusuf --format=plain --file=Users/m16yusuf/backup.sql
+
+
+<!-- Materi backup -->
+<details>
+<summary>05:53:58 - Backup Database </summary>
+
+> Pro tips : ada baiknya kita selalu melakukan backup data secara reguler
+
+Untuk melakukan backup database tidak menggunakan perintah SQL, melainkan menggunakan command postgreSQL, namanya adalah ``pg_dump`` [lebih detailnya](https://www.postgresql.org/docs/current/app-pgdump.html).
 ```
-
-
+pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --format=plain --file=Users/yourname/backup.sql
+```
+</details>
 
 <!-- materi restore -->
 <details>
@@ -91,11 +106,10 @@ Buat database baru dengan nama ``belajar_restore``
 ```sql 
 create database belajar_restore;
 ```
-
 lalu restore backup sebelumnya backup.sql ke db belajar_restore dengan perintah psql :
 
 ```
--- psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname --file=Users/yourname/backup.sql 
+psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname --file=Users/yourname/backup.sql 
 ```
 </details>
 
