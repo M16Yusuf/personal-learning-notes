@@ -60,16 +60,27 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 </details>
 
 
-
-
-
-
 04:40:55 - Jenis Jenis Join
 04:50:05 - Subqueries
 04:54:46 - Set Operator
 05:05:28 - Transaction
 05:16:22 - Locking
+
+
+
 05:30:41 - Schema
+
+di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
+
+![diagram schema](/img/diagram_schema.png)
+
+
+
+Di Postgresql kita bisa membuat schema sendiri.
+
+
+
+
 
 
 <!-- materi user management -->
