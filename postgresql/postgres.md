@@ -73,7 +73,7 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 <details>
 <summary>05:30:41 - Schema </summary>
 Di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
-![diagram schema](/postgresql/img/diagram_schema.png)
+![diagram schema](https://github.com/M16Yusuf/personal-learning-notes/blob/main/postgresql/img/diagram_schema.png)
 
 Di Postgresql kita bisa membuat schema sendiri, berikut sql untuk schema: 
 ```sql 
