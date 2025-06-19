@@ -66,7 +66,31 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 04:40:55 - Jenis Jenis Join
 04:50:05 - Subqueries
+
+
+
 04:54:46 - Set Operator
+
+**operator set**, dimana ini adalah operasi antara hasil dari dua SELECT query. Ada beberapa jenis operator set yaitu ; UNION, UNION ALL, INTERSECT, EXCEPT. 
+
+**operator set : Union**
+Union adalah operasi menggabungkan dua buah select query, dimana jika terdapat data yang duplikat, data duplikasinya akan dihapus dari hasil query. contoh:
+
+```sql
+select distinct email from customer 
+union
+select distinct email from guestbooks;
+--distinct hanya untuk menghilangkan data duplikat
+```
+<img src="./img/diagram_union.png" style="width:500px">
+
+**set operator, UNION ALL**
+
+**set operator : INTERSECT**
+
+
+**set operator, EXCEPT**
+
 
 
 
