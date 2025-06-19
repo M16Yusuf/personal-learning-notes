@@ -67,10 +67,80 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 </details>
 
 
-04:40:55 - Jenis Jenis Join
-04:50:05 - Subqueries
+<details>
+<summary> 04:40:55 - Jenis Jenis Join </summary>
+
+**INNER JOIN (default join)**
+
+**Inner join** adalah mekanisme JOIN, dimana terdapat relasi antara tabel pertama dan tabel kedua. Jika ada data di tabel pertama yang tidak memiliki relasi di table kedua ataupun sebaliknya, maka hasil INNER JOIN tidak akan ditampilkan. 
+<img src="./img/diagram_innerjoin.png" style="width:500px">
+
+contoh query inner join :
+```sql
+select * from categories
+inner join products on products.id_category = categories.id;
+```
+
+**LEFT JOIN**
+
+**left join** adalah join yang seperti inner join, tapi semua data ditable pertama akan diambil, ditable kedua hanya yang berelasi yang diambil datanya.
+<img src="./img/diagram_leftjoin.png" style="width:500px">
+
+contoh query left join:
+```sql
+select * from categories
+left join products on products.id_category = categories.id;
+```
+
+**RIGHT JOIN**
+
+**Right join** adalah join seperti inner join, semua data ditable kedua akan diambil,tapi ditable pertama hanya akan menampilkan data yag berelasinya saja. (kebalikan left join).
+<img src="./img/diagram_rightjoin.png" style="width:500px">
+
+Contoh query right join:
+```sql
+select * from categories
+right join products on products.id_category = categories.id;
+```
+
+**FULL JOIN**
+
+FULL JOIN adalah join yang semua data di tabelnya pertama dan kedua diambil/ditampilkan, jika tidak ada relasi maka hasilnya null.
+<img src="./img/diagram_fulljoin.png" style="width:500px">
+
+Contoh query full join:
+```sql
+select * from categories
+full join products on products.id_category = categories.id;
+
+```
+</details>
 
 
+
+
+<!-- Materi Subqueries -->
+<details>
+<summary> 04:50:05 - Subqueries </summary>
+
+**subqueries** adalah query yang ada didalam query yang lain, bisa digunakan untuk pencarian where dari hasil select query ataupun aggregate function.
+
+```sql
+-- subquery di where
+select avg(price) from products;  -- aggregate function
+select * from products where price > (select avg(price) from products);
+```
+```sql
+-- subquery di from
+select max(price) from (select products.price as price
+from categories join products on products.id_category = categories.id) as contoh;
+```
+</details>
+
+
+
+
+<!-- Materi set operator -->
 <details>
 <summary> 04:54:46 - Set Operator </summary>
 
@@ -173,6 +243,8 @@ select * from guestbooks;
 commit;
 ```
 </details>
+
+
 
 
 <!-- Materi Locking -->
@@ -301,6 +373,7 @@ grant insert, update, select on customer to anisa;
 
 
 
+
 <!-- Materi backup -->
 <details>
 <summary>05:53:58 - Backup Database </summary>
@@ -312,6 +385,7 @@ Untuk melakukan backup database tidak menggunakan perintah SQL, melainkan menggu
 pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --format=plain --file=Users/yourname/backup.sql
 ```
 </details>
+
 
 
 
@@ -332,6 +406,7 @@ psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname -
 
 
 
+
 <!-- materi selanjutnya -->
 <details>
 <summary> 06:03:54 - Materi Selanjutnya</summary>
@@ -342,6 +417,7 @@ Postgresql dah tamat materi selanjutnya:
 * studi kasus database desing psql
 * belajar bahasa pemograman
 </details>
+
 
 
 
