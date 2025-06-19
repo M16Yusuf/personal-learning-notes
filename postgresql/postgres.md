@@ -73,6 +73,7 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 **INNER JOIN (default join)**
 
 **Inner join** adalah mekanisme JOIN, dimana terdapat relasi antara tabel pertama dan tabel kedua. Jika ada data di tabel pertama yang tidak memiliki relasi di table kedua ataupun sebaliknya, maka hasil INNER JOIN tidak akan ditampilkan. 
+
 <img src="./img/diagram_innerjoin.png" style="width:500px">
 
 contoh query inner join :
@@ -84,6 +85,7 @@ inner join products on products.id_category = categories.id;
 **LEFT JOIN**
 
 **left join** adalah join yang seperti inner join, tapi semua data ditable pertama akan diambil, ditable kedua hanya yang berelasi yang diambil datanya.
+
 <img src="./img/diagram_leftjoin.png" style="width:500px">
 
 contoh query left join:
@@ -95,6 +97,7 @@ left join products on products.id_category = categories.id;
 **RIGHT JOIN**
 
 **Right join** adalah join seperti inner join, semua data ditable kedua akan diambil,tapi ditable pertama hanya akan menampilkan data yag berelasinya saja. (kebalikan left join).
+
 <img src="./img/diagram_rightjoin.png" style="width:500px">
 
 Contoh query right join:
@@ -106,6 +109,7 @@ right join products on products.id_category = categories.id;
 **FULL JOIN**
 
 FULL JOIN adalah join yang semua data di tabelnya pertama dan kedua diambil/ditampilkan, jika tidak ada relasi maka hasilnya null.
+
 <img src="./img/diagram_fulljoin.png" style="width:500px">
 
 Contoh query full join:
