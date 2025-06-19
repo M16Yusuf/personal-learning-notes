@@ -71,14 +71,14 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 04:50:05 - Subqueries
 
 
-
-04:54:46 - Set Operator
+<details>
+<summary> 04:54:46 - Set Operator </summary>
 
 **operator set**, dimana ini adalah operasi antara hasil dari dua SELECT query. Ada beberapa jenis operator set yaitu ; UNION, UNION ALL, INTERSECT, EXCEPT. 
 
-**operator set : Union**
-Union adalah operasi menggabungkan dua buah select query, dimana jika terdapat data yang duplikat, data duplikasinya akan dihapus dari hasil query. contoh:
+**operator set : UNION**
 
+Union adalah operasi menggabungkan dua buah select query, dimana jika terdapat data yang duplikat, data duplikasinya akan dihapus dari hasil query. contoh:
 ```sql
 select distinct email from customer 
 union
@@ -87,13 +87,49 @@ select distinct email from guestbooks;
 ```
 <img src="./img/diagram_union.png" style="width:500px">
 
-**set operator, UNION ALL**
+**set operator : UNION ALL**
+
+union all adalah operasi union, tapi data hasil duplikat tetap akan ditampilkan di hasil querynya. contoh :
+```sql
+select distinct email from customer
+union all
+select distinct email from guestbooks;
+```
+<img src="./img/diagram_unionall.png" style="width:500px">
 
 **set operator : INTERSECT**
 
+intersect adalah operasi menggabungkan dua query, tapi yang diambil/ditampilkan hanya yang datanya ada dihasil query pertama dan kedua, dan datanya muncul tidak dalam keadaan duplikat. contoh:
+```sql
+select distinct email from customer
+intersect
+select distinct email from guestbooks;
+```
+<img src="./img/diagram_intersect.png" style="width:500px">
 
-**set operator, EXCEPT**
+**set operator : EXCEPT**
 
+except adalah operasi dua query dimana, jika data itu sama pada query pertama dan query kedua maka data tidak akan ditampilkan. contoh:
+```sql
+select distinct email from customer
+except
+select distinct email from guestbooks;
+```
+<img src="./img/diagram_except.png" style="width:500px">
+
+> Adapun ``set operator`` bisagunakan pada **subquery**
+
+```sql
+-- set operator union all pada subquery
+select email, count(email) 
+from (select email from customer 
+    union all 
+    select email from guestbooks) as contoh 
+group by email;
+```
+Query tersebut untuk menghitung duplikat email pada table customer dan guestbooks, hasilnya akan seperti ini:
+<img src="./img/count_email.png" style="width:300px">
+</details>
 
 
 
