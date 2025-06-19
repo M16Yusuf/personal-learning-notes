@@ -71,6 +71,7 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 <!-- Materi Locking -->
 <details>
 <summary> 05:16:22 - Locking </summary>
+
 locking adalah proses mengunci data yang ada di DBMS. Misalkan pada saat menggunakan fitur ``transaction`` saat sql belum di ``commit`` atau di ``rollback`` maka datanya itu akan secara otomatis dilock terlebih dahulu sebelum akhirnya data dimasukan atau perintahnya dieksekusi.
 
 ```sql 
