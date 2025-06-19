@@ -128,7 +128,7 @@ from (select email from customer
 group by email;
 ```
 Query tersebut untuk menghitung duplikat email pada table customer dan guestbooks, hasilnya akan seperti ini:
-<img src="./img/count_email.png" style="width:300px">
+<img src="./img/count_email_edit.png" style="width:300px">
 </details>
 
 
