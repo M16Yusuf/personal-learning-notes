@@ -10,7 +10,10 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 <details>
 <summary> </summary>
+<img src="" style="width:500px">
 </details>
+
+
 
 00:00:00 - Pendahuluan
 00:01:22 - Pengenalan Sistem Basis Data
@@ -175,11 +178,12 @@ select * from products where id = 'P0002' for update;
 -- dan user ke-2 melakukan SELECT FOR UPDATE didata 'P0001'
 ```
 akhirnya ``proses user ke-1`` dan ``proses user ke-2`` akan saling menunggu dan dari 4 proses ini akan terjadi yang namanya proses deadlock.
-![waiting_deadlock](./img/waiting_deadlock.png)
+
+<img src="./img/waiting_deadlock.png" style="width:700px">
 
 
 Untungnya postgresql bisa mendeteksi proses deadlock, maka jika terjadi hal serupa postgresql akan otomatis menghentikannya. 
-![deadlock](./img/deadlock.png) 
+<img src="./img/deadlock.png" style="width:700px">
 </details>
 
 
@@ -190,7 +194,7 @@ Untungnya postgresql bisa mendeteksi proses deadlock, maka jika terjadi hal seru
 <summary>05:30:41 - Schema </summary>
 Di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
 
-![diagram schema](./img/diagram_schema.png)
+<img src="./img/diagram_schema.png" style="width:500px">
 
 Di Postgresql kita bisa membuat schema sendiri, berikut sql untuk schema: 
 ```sql 
@@ -307,6 +311,7 @@ Postgresql dah tamat materi selanjutnya:
 
 <details>
 <summary> </summary>
+<img src="" style="width:500px">
 </details>
 
 
