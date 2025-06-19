@@ -2,7 +2,7 @@
 
 Catatan belajar postgresql 
 <details> 
-<summary> Sumber pembelajaran dari yt Programmer Zaman Now  </summary>
+<summary> Sumber pembelajaran dari yt Programmer Zaman Now (Click to expand!)  </summary>
 
 https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
@@ -64,7 +64,53 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 04:50:05 - Subqueries
 04:54:46 - Set Operator
 05:05:28 - Transaction
-05:16:22 - Locking
+
+
+
+
+<!-- Materi Locking -->
+<details>
+<summary> 05:16:22 - Locking </summary>
+locking adalah proses mengunci data yang ada di DBMS. Misalkan pada saat menggunakan fitur ``transaction`` saat sql belum di ``commit`` atau di ``rollback`` maka datanya itu akan secara otomatis dilock terlebih dahulu sebelum akhirnya data dimasukan atau perintahnya dieksekusi.
+```sql 
+start transaction;
+update products set description = 'mie ayam original enak' where id = 'P0001';
+-- saat ini perubahan description pada data P0001 sudah dilock
+-- perubahannya hanya akan dilihat oleh sesion/ atau orang tersebut
+-- tapi ketika seseorang melakukan perubahan pada P0001 (data yang sama) maka 
+-- perubahannya akan ditangguhkan (menunggu) hingga perintah commit disesi ini dilakukan. 
+commit;
+```
+Proses mengunci data sangat penting dilakukan, salah satunya agar data benar-benar terjamin konsistensinya. Karena pada kenyataannya, aplikasi yang akan kita buat pasti digunakan oleh banyak pengguna, dan banyak pengguna tersebut bisa saja akan mengakses data yang sama, jika tidak ada proses locking, bisa dipastikan akan terjadi **RACE CONDITION**, yaitu proses balapan ketika mengubah data yang sama.
+
+Contoh saja, ketika kita belanja di toko online, kita akan balapan membeli barang yang sama, jika data tidak terjaga, bisa jadi kita salah mengupdate stock karena pada saat yang bersamaan banyak yang melakukan perubahan stock barang.
+
+**Locking manual**, saat melakukan perubahan pada data, biasanya kita akan melihat data tersebut (``select``) sebelum merubahnya. Untuk mencegah perubahan data tesebut oleh user lain pada saat kita lihat maka sebaiknya kita gunakan lock pada query select dengan menambahkan perintah ``for update`` pada query ``select`` tersebut. 
+```sql 
+start transaction;
+select * from products where id = 'P0001' for update;
+-- data P0001 sudah dilock saat query select,
+-- perubahan user lain pada data 'P0001' akan ditangguhkan
+```
+
+⚠️ Selain itu ada yang diperhatikan yaitu **Deadlock**, Deadlock adalah situasi ada 2 proses yang saling menunggu satu sama lain, namun data yang ditunggu dua-duanya di lock oleh proses yang lainnya, sehingga proses menunggunya ini tidak akan pernah selesai. Contoh kasus deadlock :
+```sql 
+-- user ke-1 melakukan SELECT FOR UPDATE didata 'P0001'
+start transaction;
+select * from products where id = 'P0001' for update;
+-- user ke-2 melakukan SELECT FOR UPDATE didata 'P0002'
+start transaction;
+select * from products where id = 'P0002' for update;
+-- lalu user ke-1 melakukan SELECT FOR UPDATE didata 'P0002'
+-- dan user ke-2 melakukan SELECT FOR UPDATE didata 'P0001'
+```
+akhirnya ``proses user ke-1`` dan ``proses user ke-2`` akan saling menunggu dan dari 4 proses ini akan terjadi yang namanya proses deadlock.
+![waiting_deadlock](./img/waiting_deadlock.png)
+
+
+Untungnya postgresql bisa mendeteksi proses deadlock, maka jika terjadi hal serupa postgresql akan otomatis menghentikannya. 
+![deadlock](./img/deadlock.png) 
+</details>
 
 
 
