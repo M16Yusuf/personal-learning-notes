@@ -52,21 +52,116 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 03:36:03 - Full Text Search
 03:49:16 - Table Relationship
 04:02:47 - Join
-04:11:54 - One to One Relationship
-04:18:17 - One to Many Relationship
-
-<details> 
-<summary  style='font-weight:bold'> 04:25:52 - Many to Many Relationship </summary>
-
-* Many to Many adalah relasi dimana ada relasi antara 2 tabel dimana table pertama bisa punya banyak relasi di table kedua, dan table kedua pun punya banyak relasi di table pertama
 
 
-* Ini memang sedikit membingungkan, bagaimana caranya bisa relasi kebanyakan secara bolak balik, sedangkan di table kita cuma punya 1 kolom?
 
-* Contoh relasi many to many adalah relasi antara produk dan penjualan, dimana setiap produk bisa dijual berkali kali, dan setiap penjualan bisa untuk lebih dari satu produk
+
+<!-- Materi One to one ralationship -->
+<details>
+<summary>04:11:54 - One to One Relationship</summary>
+
+**One to One relationship** adalah relasi antar tabel yang paling sederhana. Artinya tiap data di sebuah tabel hanya boleh berelasi ke maksimal 1 data di tabel lainnya tidak boleh ada relasi lebih dari 1 data.
+
+Contoh misal, kita membuat aplikasi toko online yang terdapat fitur wallet, dan 1 customer, cuma boleh punya 1 wallet.
+
+<img src="./img/diagram_OtoO.png" style="width:500px">
+
+Cara membuat One to One relationship cukup mudah, kita bisa membuat kolom foreign key, lalu set kolom tersebut menggunakan **UNIQUE KEY**, hal ini dapat mencegah terjadi data di kolom tersebut agar tidak duplikat.
+
+Atau cara lainnya, kita bisa membuat tabel dengan primary key yang sama, sehingga tidak butuh lagi kolom untuk FOREIGN KEY.
+
+```sql
+
+-- membuat table wallet 
+create table wallet (
+	id serial not null,
+	id_customer int not null,
+	balance int not null default 0,
+	primary key (id),
+	constraint wallet_customer_unique unique (id_customer),
+-- UNIQUE memastikan bahwa id_customer tidak ada yg sama datanya
+	constraint fk_wallet_customer foreign key (id_customer) references customer(id)
+);
+```
 </details>
 
 
+
+
+<!-- Materi one to Many -->
+<details>
+<summary> 04:18:17 - One to Many Relationship
+</summary>
+
+**One to many relationship** adalah relasi antar tabel dimana satu data bisa digunakan lebih dari satu kali di tabel relasinya.Berbeda dengan one to one yang cuma bisa digunakan maksimal 1 kali di tabel relasinya, one to many tidak ada batasan berapa banyak data digunakan.
+
+Contoh relasi antar tabel categories dan products, dimana satu category bisa digunakan oleh lebih dari satu product, yang artinya relasinya one category to many products.
+
+Pembuatan relasi one to many sebenarnya sama dengan one to one, yang membedakan adalah, kita tidak perlu menggunakan ``UNIQUE KEY``, karena datanya memang bisa berkali-kali ditambahkan di tabel relasinya.
+
+<img src="./img/diagram_OtoM.png" style="width:500px">
+
+```sql
+-- membuat table categoies 1 to N products
+create table categories(
+	id varchar(10) not null,
+	name varchar(100) not null,
+	primary key (id)
+);
+
+-- rubah table products
+alter table products
+add column id_category varchar(10)
+add constraint fk_product_category foreign key(id_category) references categories(id);
+```
+</details>
+
+
+
+
+<!-- Materi Many to Many relationship -->
+<details> 
+<summary> 04:25:52 - Many to Many Relationship </summary>
+
+**Many to Many** adalah relasi dimana ada relasi antara 2 tabel dimana table pertama bisa punya banyak relasi di table kedua, dan table kedua pun punya banyak relasi di table pertama.
+
+Ini memang sedikit membingungkan, bagaimana caranya bisa relasi kebanyakan secara bolak balik, sedangkan di table kita cuma punya 1 kolom?
+
+Contoh relasi many to many adalah relasi antara produk dan penjualan, dimana setiap produk bisa dijual berkali kali, dan setiap penjualan bisa untuk lebih dari satu produk.
+
+Solusi yang biasa dilakukan jika terjadi relasi many to many adalah, biasanya kita akan <u>menambah 1 tabel ditengahnya</u>. Tabel ini bertugas sebagai jembatan untuk menggabungkan relasi many to many. Isi table ini akan ada id dari table pertama dan table kedua, dalam kasus ini adalah ``id_product`` dan ``id_order``. Dengan demikian, kita bisa menambahkan beberapa data ke dalam tabel relasi ini, sehingga berarti satu product bisa dijual beberapa kali di dalam table order, dan satu order bisa membeli lebih dari satu product.
+
+<img src="./img/diagram_MtoM.png" style="width:500px">
+
+```sql 
+-- Pemecahan masalah : products(N) to (N)orders
+-- jadi : products(N) to (1)orders_detail(1) to (N)orders
+-- table products sudah dibuat
+-- table orders 
+create table orders(
+	id serial not null,
+	total int not null,
+	order_date timestamp not null default current_timestamp,
+	primary key(id)
+);
+-- buat table orders detail
+create table orders_detail(
+	id_product varchar(10) not null,
+	id_order int not null,
+	price int not null,
+	quantity int not null,
+	primary key(id_product, id_order),
+    add constraint fk_order_detail _product foreign key (id_product) references products(id),
+    add constraint fk_order_detail_order foreign key (id_order) references orders(id)
+);
+
+```
+</details>
+
+
+
+
+<!-- Materi jenis-jenis join -->
 <details>
 <summary> 04:40:55 - Jenis Jenis Join </summary>
 
