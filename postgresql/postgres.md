@@ -8,6 +8,10 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 </details>
 
+<details>
+<summary> </summary>
+</details>
+
 00:00:00 - Pendahuluan
 00:01:22 - Pengenalan Sistem Basis Data
 00:08:49 - Pengenalan PostgreSQL
@@ -63,9 +67,49 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 04:40:55 - Jenis Jenis Join
 04:50:05 - Subqueries
 04:54:46 - Set Operator
-05:05:28 - Transaction
 
 
+
+
+<!-- Materi transaction -->
+<details>
+<summary> 05:05:28 - Transaction </summary>
+
+**Transaction** adalah cara atau mekanisme membungkus beberapa perintah sekaligus menjadi satu operasi, hal ini bertujuan agar data tetap konsisten. Kenapa bisa konsisten? karena semua perintah yang ada dalam transaction harus berhasil semuanya atau gagal semuanya. 
+
+contoh kasus aplikasi belanja online ketika customer menekan tombol pesan maka yt terjadi:
+
+* insert data tabel order pesanan, 
+* insert data detail order pesanan,  
+* menurunkan quantity di table product dll.
+
+Jika terjadi kesalahan/pembatalan disalah satu perintah harapannya perintah sebelumnya dibatalkan, agar data tetap konsisten. 3 perintah utama ``transaction`` di postgresql yaitu: 
+
+|     Perintah      |       Keterangan       |
+|-------------------|------------------------|
+| START TRANSACTION | Memulai proses transaksi, proses selanjutnya akan dianggap transaksi sampai perintah COMMIT atau ROLLBACK |
+|COMMIT             | Menyimpan secara permanen seluruh proses transaksi |
+|ROLLBACK           | Membatalkan secara permanen seluruh proses transaksi |
+
+Fitur transaction ini tidak bisa berpengaruh pada perintah **DDL (Data Definition Language)** seperti perintah merubah struktur, membuat tabel, menambahkan kolom, hapus tabel, hapus DB. Transaction hanya bisa digunakan pada perintah **DML (Data Manipulation Language)** seperti operasi Insert, Update, dan Delete saja.
+
+```sql
+-- contoh transaction
+start transaction ;
+insert into guestbooks(email, title, content)
+values ('transaction@pzn.com', 'transaction', 'transaction');
+
+insert into guestbooks(email, title, content)
+values ('transaction@pzn.com', 'transaction', 'transaction 2');
+
+insert into guestbooks(email, title, content)
+values ('transaction@pzn.com', 'transaction', 'transaction 3');
+-- hasil input 3 data diatas muncul di user yang melakukan input saja 
+-- hasil input 3 data diatas akan benar-benar maksu jika sudah dicommit
+select * from guestbooks;
+commit;
+```
+</details>
 
 
 <!-- Materi Locking -->
