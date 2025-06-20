@@ -42,11 +42,134 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 02:18:41 - Limit Clause
 02:23:20 - Select Distinct Data
 02:25:03 - Numeric Function
-02:31:36 - Auto Increment
-02:38:29 - Sequence
-02:44:47 - String Function
-02:47:22 - Date dan Time Function
-02:50:24 - Flow Control Function
+
+
+
+<!-- Materi auto increment / serial -->
+<details>
+<summary> 02:31:36 - Auto Increment </summary>
+
+PostgreSQL memiliki tipe data Number bernama **SERIAL**, fitur ini bisa kita gunakan untuk membuat function yang akan otomatis mengembalikan nilai yang selalu naik ketika dipanggil.
+
+Dengan menggunakan SERIAL, kita tidak perlu lalu memasukkan data primary key secara manual, secara otomatis nilai primary key akan naik. 
+
+Contoh membuat tabel admin dengan id serial:
+
+```sql
+create table admin(
+	id SERIAL not null,
+	first_name varchar(100) not null,
+	last_name varchar(100),
+	primary key(id)
+);
+-- melihat current value dari serial 
+select currval('admin_id_seq');
+```
+</details>
+
+
+
+
+<!-- Materi sequence  -->
+<details>
+<summary> 02:38:29 - Sequence </summary>
+
+Saat kita menggunakan tipe data SERIAL, sebenarnya dibelakangnya, PostgreSQL menggunakan Sequence. **Sequence** adalah fitur dimana kita bisa membuat function auto increment.
+
+Saat menggunakan tipe data SERIAL pada Primary Key, secara otomatis PostgreSQL akan membuat Sequence, dan memanggil function sequence nya sebagai default value untuk Primary Key nya.
+
+```sql
+-- membuat sequence 
+create sequence contoh_sequence;
+-- memanggil sequence, otomatis increment
+select nextval('contoh_sequence');
+-- melihat/mengambil nilai terakhir sequence 
+select currval('contoh_sequence');
+
+-- SERIAL = nextval('admin_id_seq)
+-- perintah untuk melihat sequene yang ada di database 
+-- cmd/psql = \ds
+
+-- contoh menggunakan sequence manual pada saat membuat tabel
+-- lebih baik menggunakan serial
+create table admin(
+	id int not null default nextval('admin_id_seq'),
+	first_name varchar(100),
+	last_name varchar(100),
+	primary key(id)
+);
+```
+</details>
+
+
+
+
+<!-- materi string function -->
+<details>
+<summary>02:44:47 - String Function </summary>
+
+Sama seperti number, di PostgreSQL juga banyak menyediakan function untuk tipe data String. Ada banyak sekali function-function yang bisa kita gunakan. Detail string function bisa dicek [disini](https://www.postgresql.org/docs/15/functions-string.html).
+
+Contoh salah satu string function:
+
+```sql 
+select id, lower(name), length(name), lower(description) from products;
+```
+</details>
+
+
+
+
+<!-- Materi date and time function -->
+<details>
+<summary> 02:47:22 - Date dan Time Function</summary>
+
+PostgreSQL juga menyediakan banyak sekali function yang bisa kita gunakan untuk mengolah data tipe Date dan Time. Detail untuk datetime ada [disini](https://www.postgresql.org/docs/15/functions-datetime.html)
+
+Contoh penggunaan date time:
+
+```sql 
+select * from products;
+select id, extract(year from created_at), extract(month from created_at) from products;
+```
+</details>
+
+
+<!-- Materi flow control function -->
+<details>
+<summary> 02:50:24 - Flow Control Function </summary>
+
+PostgreSQL memiliki fitur flow control function. Ini mirip IF ELSE di bahasa pemrograman tapi tidak sekompleks pada bahasa pemograman. Detail informasi [disini](https://www.postgresql.org/docs/current/functions-conditional.html)
+
+```sql
+--contoh 1:
+select id, category,
+	case category
+		when 'makanan' then 'enak'
+		when 'minuman' then 'seger'
+		else 'apa itu?' 
+	end as category_case
+from products;
+-- conto 2:
+select id, price,
+	case 
+		when price <= 15000 then 'murah'
+		when price <= 20000 then 'mahal'
+		else 'mahal banget'
+	end as "apakah murah?"
+from products;
+-- contoh 3
+select id, name, description from products;
+select id, name, 
+	case
+		when description is null then 'kosong'
+		else description 
+	end as description
+from products;
+```
+</details>
+
+
 
 
 <!-- Materi agregate function -->
@@ -92,7 +215,7 @@ select category,
 from products group by category; 
 ```
 
-**Having clouse**. Kadang kita ingin melakukan filter terhadap data yang sudah kita grouping. Misal kita ingin menampilkan rata-rata harga per kategori, tapi yang harganya diatas 10.000 misalnya. Jika menggunakan WHERE di SELECT, hal ini tidak bisa dilakukan untuk memfilter hasil aggregate function, kita harus menggunakan HAVING clause.
+**HAVING clause**. Kadang kita ingin melakukan filter terhadap data yang sudah kita grouping. Misal kita ingin menampilkan rata-rata harga per kategori, tapi yang harganya diatas 10.000 misalnya. Jika menggunakan WHERE di SELECT, hal ini tidak bisa dilakukan untuk memfilter hasil aggregate function, kita harus menggunakan HAVING clause.
 
 ```sql
 -- having clause / filter data yang sudah di grouping
@@ -108,6 +231,7 @@ select category,
 from products group by category having avg(price) >= 20000; 
 ```
 </details>
+
 
 
 
