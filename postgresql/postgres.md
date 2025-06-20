@@ -35,6 +35,9 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 01:32:28 - Update Data
 01:40:54 - Delete Data
 01:43:58 - Alias
+
+
+
 01:49:42 - Where Operator
 02:16:06 - Order By Clause
 02:18:41 - Limit Clause
@@ -48,10 +51,120 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 02:58:18 - Aggregate Function
 03:01:33 - Grouping
 03:09:14 - Constraint
+
+
+
 03:20:44 - Index
-03:36:03 - Full Text Search
-03:49:16 - Table Relationship
-04:02:47 - Join
+
+
+
+
+<!-- full text search  -->
+<details>
+<summary> 03:36:03 - Full Text Search </summary>
+
+Ketika melakukan proses pencarian di database biasanya perintah yang digunakan adalah perintah like/ilike. Namun perintah ini dinilai lamban jika database sudah mencapai puluhan ribu, karena operasi ini bekerja dengan mencari seluruh data tabel dari awal hingga paling akhir. Postgersql menyediakan perintah [full text search](https://www.postgresql.org/docs/current/textsearch-intro.html) untuk mengatasi perintah ini. Adapaun kekurangan dan kelebihan full text ini:
+
+* LIKE lamban karena mencari seluruh data di tabel dari baris pertama sampai akhir (tidak pakai index)
+* full-text bisa digunakan untuk mencari sebagian kata di kolom dengan tipe data string
+* tidak flexible karena hanya mencari perkata tidak seperti like yang bisa mencari sepersukukata
+* Di PostgreSQL, Full-Text Search menggunakan function to_tsvector(text) dan to_tsquery(query)
+* bisa menggunakan function tersebut tanpa membuat index, namun performanya akan sama saja dengan LIKE, lambat karena harus di cek satu-satu
+
+```sql
+-- full search / tidak menggunakan index
+select * from products where name ilike '%mie%';
+select * from products where to_tsvector(name) @@ to_tsquery('mie');
+```
+
+Untuk membuat index Full-Text Search kita bisa menggunakan perintah yang sama dengan index biasa, tapi harus disebutkan detail dari jenis index Full-Text Search nya
+
+```sql
+-- lihat bahasa
+select cfgname from pg_ts_config;
+--buat index
+create index products_name_search on products using gin(to_tsvector('indonesian', name));
+create index products_description_search on products using gin(to_tsvector('indonesian', description));
+-- saat pakai tidak usah pakai to_tsvector tapi langsung to_tsquery
+select * from products where name @@ to_tsquery('mie');
+select * from products where description  @@ to_tsquery('mie');
+```
+
+query operator di full-text search, **to_tsquery** mendukung operator : &/AND, |/or, !/NOT, ""/semua data
+
+```sql 
+select * from products where name @@ to_tsquery('mie & baso'); -- and
+select * from products where name @@ to_tsquery('mie | baso'); -- or
+select * from products where name @@ to_tsquery('!baso'); -- not
+select * from products where name @@ to_tsquery('''mie ayam'''); -- '' '' mencari detail/tepat satu kalimat
+```
+
+> Kita juga bisa secara otomatis membuat kolom dengan tipe data **TSVECTOR**. Secara otomatis kolom tersebut berisi text yang memiliki index Full-Text Search
+</details>
+
+
+
+
+<!-- Materi table relationship -->
+<details>
+<summary> 03:49:16 - Table Relationship </summary>
+
+Dalam Relational DBMS, salah satu fitur andalan nya adalah table relationship. Yaitu relasi antar tabel kita bisa melakukan relasi dari satu tabel ke tabel lain. 
+
+Saat membuat relasi tabel, biasanya kita akan membuat sebuah kolom sebagai referensi ke tabel lainnya. Misal saat kita membuat tabel penjualan, di dalam tabel penjualan, kita akan menambahkan kolom id_produk sebagai referensi ke tabel produk, yang berisi primary key di tabel produk. Kolom referensi ini di PostgreSQL dinamakan **Foreign Key**.
+
+```sql
+create table wishlist(
+	id serial not null,
+	id_product varchar(10) not null,
+	description text,
+	primary key(id),
+	constraint fk_wishlist_product foreign key (id_product) references products (id)
+);
+```
+
+Ketika menghapus data berelasi, secara default PostgreSQL akan menolak operasi delete tersebut, hal ini karena default behaviornya adalah restrict. Fitur ini dapat dirubah dengan cara merubah ``constraint foreign key``nya. Seperti contoh berikut:
+
+```sql
+alter table wishlist 
+add constraint fk_wishlist_product foreign key(id_product) references products(id)
+on delete cascade on update cascade;
+```
+
+Selain ``restrict`` dan ``cascade``, ada beberapa sintaks dengan fungsinya masing-masing yaitu:
+
+|   bahavior   |      ON DELETE       | ON UPDATE |
+| ------------ | -------------------- | --------- |
+| RESTRICT     | ditolak              | ditolak   |
+| CASCADE      | data dihapus         | data dihapus |
+| NO ACTION    | data dibiarkan | data dibiarkan |
+| SET NULL     | diubah null | diubah null |
+| SET DEFAULT  | diubah default value | diubah default value |
+
+</details>
+
+
+
+
+
+<!-- materi join -->
+<details>
+<summary> 04:02:47 - Join </summary>
+
+PostgreSQL mendukung query SELECT langsung ke beberapa tabel secara sekaligus. Namun untuk melakukan itu, kita perlu melakukan JOIN di SQL SELECT yang kita buat. Untuk melakukan JOIN, kita perlu menentukan tabel mana yang merupakan referensi ke tabel lain. 
+
+Join cocok sekali dengan foreign key, walaupun di PostgreSQL tidak ada aturan kalau JOIN harus ada foreign key. Join di PostgreSQL bisa dilakukan untuk lebih dari beberapa tabel
+
+> Idealnya kita melakukan JOIN jangan lebih dari 5 tabel, karena itu bisa berdampak ke performa query yang lambat
+
+```sql
+-- contoh, join dengan alias
+select p.id, c.email, p.name, w.description
+from wishlist as w 
+	join products as p on w.id_product = p.id 
+	join customer as c on c.id = w.id_customer;
+```
+</details>
 
 
 
@@ -491,6 +604,7 @@ pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --form
 <!-- materi restore -->
 <details>
 <summary>05:59:20 - Restore Database </summary>
+
 Buat database baru dengan nama ``belajar_restore``
 
 ```sql 
