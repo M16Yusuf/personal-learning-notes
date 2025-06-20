@@ -34,10 +34,9 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 01:29:58 - Where Clause
 01:32:28 - Update Data
 01:40:54 - Delete Data
+
+
 01:43:58 - Alias
-
-
-
 01:49:42 - Where Operator
 02:16:06 - Order By Clause
 02:18:41 - Limit Clause
@@ -48,13 +47,131 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 02:44:47 - String Function
 02:47:22 - Date dan Time Function
 02:50:24 - Flow Control Function
-02:58:18 - Aggregate Function
-03:01:33 - Grouping
-03:09:14 - Constraint
+
+
+<!-- Materi agregate function -->
+<details>
+<summary>02:58:18 - Aggregate Function </summary>
+
+PostgreSQL mendukung function-function untuk melakukan aggregate. Misal, kita ingin melihat harga paling mahal di tabel product, atau harga termurah, atau rata-rata harga produk, atau total jumlah data di tabel, dan lain-lain. Informasi detail [disini](https://www.postgresql.org/docs/current/functions-aggregate.html).
+
+```sql 
+-- contoh menghitung count/jumlah
+select id from products;
+select count(id) from products;
+-- contoh average 
+select avg(price) from products;
+-- contoh mencari nilai min
+select min(price) from products;
+-- contohh mencari nilai max
+select max(price) from products;
+```
+</details>
 
 
 
-03:20:44 - Index
+
+<!-- Materi Grouping  -->
+<details>
+<summary> 03:01:33 - Grouping </summary>
+
+Kadang saat melakukan aggregate, kita ingin datanya di grouping berdasarkan kriteria tertentu. Misal kita ingin melihat rata-rata harga product, tapi ingin per category.  Atau kita ingin melihat total semua product, tapi per category. Hal ini bisa dilakukan di PostgreSQL dengan menggunakan GROUP BY clause. 
+
+**GROUP BY clause** ini hanya bisa digunakan jika kita menggunakan aggregate function.
+
+```sql
+-- group  by clause hanya bisa digunakan jika pakai aggregate function
+-- contoh satu
+select category, count(id) as "total product"
+from products group by category; 
+-- contoh dua 
+select category, 
+	avg(price) as "rata-rata harga", 
+	min (price) as "Harga terendah",
+	max(price) as "Harga termahal"
+from products group by category; 
+```
+
+**Having clouse**. Kadang kita ingin melakukan filter terhadap data yang sudah kita grouping. Misal kita ingin menampilkan rata-rata harga per kategori, tapi yang harganya diatas 10.000 misalnya. Jika menggunakan WHERE di SELECT, hal ini tidak bisa dilakukan untuk memfilter hasil aggregate function, kita harus menggunakan HAVING clause.
+
+```sql
+-- having clause / filter data yang sudah di grouping
+-- contoh satu
+select category,
+	count(id) as total
+from products group by category having count(id) > 3;
+-- contoh dua 
+select category, 
+	avg(price) as "rata-rata harga", 
+	min (price) as "Harga terendah",
+	max(price) as "Harga termahal"
+from products group by category having avg(price) >= 20000; 
+```
+</details>
+
+
+
+<!-- constraint -->
+<details>
+<summary> 03:09:14 - Constraint </summary>
+
+Di PostgreSQL, kita bisa menambahkan constraint untuk menjaga data di tabel tetap baik. Constraint sangat bagus ditambahkan untuk menjaga validitas di program kita, sehingga data yang masuk ke database tetap akan terjaga.
+
+**Unique constraint** adalah constraint yang memastikan bahwa data kita tetap unique. Jika kita mencoba memasukkan data yang duplikat, maka PostgreSQL akan menolak data tersebut.
+
+```sql
+-- table customer dengan email unique constraint 
+-- mencegah data email duplikat.
+create table customer(
+	id serial not null,
+	email varchar(100) not null,
+	first_name varchar(100) not null,
+	last_name varchar(100) not null,
+	primary key (id),
+	constraint unique_email unique(email)
+);
+```
+
+**Check constraint** Check constraint adalah constraint yang bisa kita tambahkan kondisi pengecekannya. Ini cocok untuk mengecek data sebelum dimasukkan ke dalam database. Misal kita ingin memastikan bahwa harga harus diatas 1000 misal, maka kita bisa menggunakan check constraint.
+
+```sql
+-- check constraint (constraint yang digunakan untuk menambahkan kondisi cek)
+alter table products 
+	add constraint price_check check (price > 1000);
+
+alter table products
+	add constraint quantity_check check (quantity > 0);
+```
+</details>
+
+
+
+
+<!-- Materi index -->
+<details>
+<summary> 03:20:44 - Index </summary>
+
+Secara default, PostgreSQL akan menyimpan data di dalam disk seperti tabel biasanya. Hal ini menyebabkan, ketika kita mencari data, maka PostgreSQL akan melakukan pencarian dari baris pertama sampai terakhir, yang artinya semakin banyak datanya, maka akan semakin lambat proses pencarian datanya.
+
+Kita bisa ubah cara PostgreSQL menyimpan data pada kolom, agar mudah dicari, yaitu menggunakan **Index**. Saat kita membuat index, PostgreSQL akan menyimpan data dalam struktur data [B-Tree](https://en.wikipedia.org/wiki/B-tree). Tidak hanya akan mempermudah kita saat melakukan pencarian, index juga akan mempermudah kita ketika melakukan pengurutan menggunakan **ORDER BY**. 
+
+> index adalah teknik menambahkan index pada kolom data agar memudahkan pencarian (Btree)
+
+Kita bisa membuat lebih dari satu index pada tiap table. Satu index bisa dipakai untuk beberapa kolom index(col1, col2, col3) artinya kita bisa gunakan (col1), (col1, col2), dan (col1,col2,col3)
+```sql
+-- index sellers_id_and_name_index, mempercepat pencarian (id) atau (id dan nama)
+-- tidak mempercepat untuk pencarian nama saja. 
+create index sellers_id_and_name_index on sellers(id,name);
+select * from sellers where id =1;
+select * from sellers where id=1 or name ='galeri Tono';
+```
+
+> kekurangan : index mempercepat pencarian query tapi memperlambat proses insert, update, delete. Karena setiap kali kita melakukan perubahan data data query maka akan terjadi proses updata index.
+
+⚠️ Tidak perlu menambahkan index pada primary key atau unique contraint karena sudah ada indexnya.
+
+<img src="./img/ss_indexx.png" style="width:500px">
+</details>
 
 
 
