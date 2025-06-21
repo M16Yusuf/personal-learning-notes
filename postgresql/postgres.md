@@ -32,6 +32,12 @@ atau menggunakan perintah : "select datname from pg_database;"
 comand cmd ganti db (setelah login) : "\c nama_database"
 
 Melihat list table di database : "\dt"   
+
+Backup database ke file :
+pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --format=plain --file=Users/yourname/backup.sql
+
+restore database dari file hasil backup :
+psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname --file=Users/yourname/backup.sql 
 ```
 
 <!-- Materi tipe data -->
