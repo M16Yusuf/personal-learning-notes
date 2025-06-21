@@ -12,11 +12,6 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 Download postgersql 
 https://www.postgresql.org/download/
 
-<details>
-<summary> </summary>
-<img src="" style="width:500px">
-</details>
-
 
 ```
 Masuk ke postgresql client (tanpa kutip/" "):
