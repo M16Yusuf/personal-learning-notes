@@ -36,12 +36,190 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 01:40:54 - Delete Data
 
 
-01:43:58 - Alias
-01:49:42 - Where Operator
-02:16:06 - Order By Clause
-02:18:41 - Limit Clause
-02:23:20 - Select Distinct Data
-02:25:03 - Numeric Function
+
+<!-- Materi alias  -->
+<details>
+<summary> 01:43:58 - Alias</summary>
+
+PostgreSQL memiliki fitur untuk melakukan alias untuk kolom dan tabel. Alias berguna jika kita ingin mengubah nama kolom atau nama tabel ketika melakukan SELECT data. Mungkin saat ini alias untuk tabel tidak terlalu terlihat gunanya, tapi nanti ketika kita telah mempelajari tentang JOIN, maka fitur alias untuk tabel sangat berguna sekali. Contoh pemakaian alias :
+
+```sql 
+select p.id as "kode barang",
+	p.price as "harga barang",
+	p.description as "deskipsi barang" 
+from products as p;
+```
+</details>
+
+
+
+
+<!-- Materi where operator -->
+<details>
+<summary> 01:49:42 - Where Operator (Perbandingan, AND OR, like, null, between, IN)</summary>
+
+#### Operator Perbandingan
+
+| Operator | Keterangan  |
+| -------- | ----------- |
+| =        | Sama dengan |
+| <>       | atau        |
+| !=       | Tidak sama dengan |
+| <        | Kurang dari |
+| <=       | Kurang dari atau sama dengan |
+| >        | Lebih dari  |
+| >=       | Lebih dari atau sama dengan |
+
+contoh mencari data dengan operator perbandingan 
+```sql
+select * from products where price > 15000;
+
+select * from products where price <= 15000;
+
+select * from products where category != 'minuman';
+```
+
+#### AND & OR operator 
+Kadang kita ingin mencari data dengan beberapa gabungan kondisi, kita bisa menggunakan operator ``AND`` dan ``OR``. AND dan OR digunakan untuk menggabungkan beberapa dua operator. Contoh : 
+
+```sql
+-- contoh 1 
+select * from products where price > 15000 and category='makanan';
+-- contoh 2 menggunakan OR & AND
+select * from products where quantity>100 or category ='makanan' and price >10000;
+```
+
+Kita juga bisa menentukan prioritas operator dengan menambahkah tanda kurung (). Contoh :
+
+```sql 
+select * from products where category ='makanan' or (quantity>100 and price >10000);
+```
+
+#### LIKE Operator
+
+LIKE operator adalah operator yang bisa kita gunakan untuk mencari sebagian data dalam String. Namun perlu diingat, operasi LIKE itu sangat lambat, oleh karena itu, tidak disarankan jika datanya sudah terlalu besar di tabel. 
+
+Operasi LIKE **case sensitive**, jadi huruf besar dan kecil juga berpengaruh, jika kita ingin tidak case sensitive, bisa menggunakan ILIKE/ilike. Contoh operator ilike:
+
+```sql 
+select * from products where name ilike '%mie%';
+```
+
+#### NULL Operator 
+
+Untuk mencari data yang berisi NULL, kita tidak bisa menggunakan operator perbandingan = NULL. Dan untuk mencari yang tidak null bisa menggunakan IS NOT NULL.
+
+```sql
+-- conton is null
+select * from products where description is null;
+-- contoh is not null
+select * from products where description is not null;
+```
+
+#### BETWEEN Operator 
+
+Kadang kita ingin mencari data yang >= dan <= secara sekaligus. Misal kita ingin mencari products yang harganya antara 10000 sampai 20000. Untuk melakukan ini, kita bisa menggunakan WHERE price >= 10000 AND price <= 20000
+
+Namun ada operator **BETWEEN** yang bisa kita gunakan agar lebih sederhana. Untuk kebalikannya, kita bisa gunakan **NOT BETWEEN**.
+
+```sql 
+-- contoh between
+select * from products where price between 10000 and 20000;
+-- contoh not between 
+select * from products where price not between 10000 and 20000;
+```
+
+#### IN Operator 
+
+Operator IN adalah operator untuk melakukan pencarian sebuah kolom dengan beberapa nilai. Misal kita ingin mencari products dengan category Makanan atau Minuman, maka kita bisa menggunakan **operator IN**. Untuk kebalikannya, kita bisa menggunakan **NOT IN**
+
+```sql 
+select * from products where category in ('makanan', 'minuman');
+```
+</details>
+
+
+
+
+<!-- Order by clause -->
+<details>
+<summary> 02:16:06 - Order By Clause </summary>
+
+Untuk mengurutkan data ketika kita menggunakan perintah SQL SELECT, kita bisa menambahkan ORDER BY clause. **ORDER BY clause** digunakan untuk mengurutkan data berdasarkan kolom yang dipilih, dan jenis urutan (ASC atau DESC). Kita juga bisa mengurutkan tidak hanya terhadap satu kolom, tapi beberapa kolom.
+```sql 
+-- contoh 
+select * from products order by price asc, id desc;
+```
+</details>
+
+
+
+
+<!-- materi limit clause -->
+<details>
+<summary>02:18:41 - Limit Clause </summary>
+
+Mengambil seluruh data di tabel bukanlah pilihan bijak, apalagi jika datanya sudah banyak sekali. Kita bisa membatasi jumlah data yang diambil dalam SQL SELECT dengan LIMIT clause. Selain membatasi jumlah data, kita juga bisa meng-skip sejumlah data yang tidak ingin kita lihat. LIMIT biasanya digunakan saat melakukan paging di aplikasi kita, dengan kombinasi OFFSET.
+
+```sql 
+-- contoh 1 limit clause
+select * from products where price > 0 order by price asc, id desc limit 2;
+-- contoh 2 limit clause + offset
+select * from products where price > 0 order by price asc, id desc limit 2 offset 2;
+```
+</details>
+
+
+
+
+<!-- materi distinct  -->
+<details>
+<summary> 02:23:20 - Select Distinct Data</summary>
+
+Saat melakukan query dengan SELECT, kadang kita mendapatkan data yang duplikat. Misal kita ingin melihat semua kategori di tabel products, maka otomatis hasil query SELECT akan duplikat, karena banyak sekali produk dengan kategori yang sama. 
+
+Jika kita ingin menghilangkan data-data duplikat tersebut , kita bisa menggunakan SELECT dengan tambahan DISTINCT sebelum nama kolom nya. 
+
+```sql
+-- tanpa distinct
+select category from products;
+-- dengan ditinct
+select distinct category from products;
+```
+</details>
+
+
+
+
+<!-- Materi numeric function -->
+<details>
+<summary> 02:25:03 - Numeric Function</summary>
+
+PostgreSQL memiliki banyak sekali fitur untuk manipulasi data angka. Hal ini memudahkan kita untuk memanipulasi data angka. Secara garis besar, fitur ini dibagi menjadi dua, Arithmetic Operator dan Mathematical Function. 
+
+#### Arithmetic Operator
+
+<img src="./img/arithmetic_operator.png" style="width:400px">
+
+```sql
+-- menggunakan arithmetic operator 
+select 10 + 10 as hasil;
+select id, price/1000 as price_in_k from products;
+```
+
+#### Mathematical Function
+
+Ini adalah kumpulan function yang terdapat di PostgreSQL yang bisa kita gunakan sebagai fungsi-fungsi matematika. Ada banyak sekali tidak bisa dimuat disini semua, lengkapnya cek dokumentasinya [disini](https://www.postgresql.org/docs/15/functions-math.html). 
+
+```sql 
+-- beberapa contoh mathematical function
+select pi();
+select power(10,2);
+select cos(10), sin(10), tan(10);
+select id, name, power(quantity, 2) as quantity_power_2 from products;
+```
+</details>
+
 
 
 
