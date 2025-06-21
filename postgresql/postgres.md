@@ -8,32 +8,222 @@ https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
 
 </details>
 
+
+Download postgersql 
+https://www.postgresql.org/download/
+
 <details>
 <summary> </summary>
 <img src="" style="width:500px">
 </details>
 
 
+```
+Masuk ke postgresql client (tanpa kutip/" "):
+"psql --host=localhost --port=5432 --dbname=postgres --username=khannedy --password"
 
-00:00:00 - Pendahuluan
-00:01:22 - Pengenalan Sistem Basis Data
-00:08:49 - Pengenalan PostgreSQL
-00:12:59 - Menginstall PostgreSQL
-00:31:35 - Database
-00:41:05 - Tipe Data
-00:43:13 - Tipe Data Number
-00:47:13 - Tipe Data String
-00:52:48 - Tipe Data Date dan Time
-00:55:46 - Tipe Data Boolean
-00:56:38 - Tipe Data Enum
-00:58:21 - TIpe Data Lainnya
-00:59:56 - Table
-01:15:27 - Insert Data
-01:24:06 - Select Data
-01:26:42 - Primary Key
-01:29:58 - Where Clause
-01:32:28 - Update Data
-01:40:54 - Delete Data
+command membuat & menghapus database
+create database nama_database;
+drop database nama_database;
+
+Meliat list database di postgresql : "\l" (ini L)
+atau menggunakan perintah : "select datname from pg_database;"
+
+comand cmd ganti db (setelah login) : "\c nama_database"
+
+Melihat list table di database : "\dt"   
+```
+
+<!-- Materi tipe data -->
+<details>
+<summary> 00:41:05 - Tipe Data </summary>
+
+#### Tipe data Number 
+
+Secara garis besar, tipe data number di PostgreSQL ada dua jenis;
+
+* Integer, atau tipe number bilangan bulat
+* Floating Point, atau tipe data number pecahan
+
+Ada juga tipe data desimal/numeric, ini tipe data number khusus yang bisa ditentukan jumlah precision dan scale nya. Dokumentasi mengenai tipe data number bisa dilihat [disini](https://www.postgresql.org/docs/current/datatype-numeric.html).
+
+#### Tipe data String 
+
+Tipe data String atau Text ada banyak di PostgreSQL. 
+
+##### Pertama tipe data String : CHAR dan VARCHAR
+
+Kita bisa menentukan jumlah panjang maksimal karakter yang bisa ditampung oleh CHAR dan VARCHAR dengan menggunakan kurung buka lalu masukan jumlah maksimal karakter dan diakhiri kurung tutup. Misal, CHAR(10) atau VARCHAR(10) artinya tipe data String dengan maksimal jumlah karakternya adalah 10 karakter. Maksimum ukuran CHAR atau VARCHAR adalah 65535 karakter. 
+
+##### Kedua Tipe data string : Text 
+
+Berbeda dengan CHAR dan VARCHAR yang kita bisa tentukan panjang maksimum nya, TEXT tidak memiliki maksimum  panjang nya. 
+
+#### Tipe data Date & Time
+
+Sebenarnya bisa kita gunakan String untuk menyimpan data waktu atau tanggal, namun itu tidak direkomendasikan, karena akan menyulitkan kita ketika nanti butuh melakukan manipulasi waktu atau tanggal di PostgreSQL. Ada beberapa jenis tipe data date & time lengkapnya bisa dicek [disini](https://www.postgresql.org/docs/current/datatype-datetime.html).
+
+#### Tipe data Boolean
+
+BOOLEAN adalah tipe data kebenaran, yang artinya datanya hanya ada dua jenis, benar atau salah. Benar direpresentasikan dengan data TRUE, sedangkan salah direpresentasikan dengan data FALSE.
+
+#### Tipe data ENUM
+
+Saat membuat kolom, kadang ada jenis tipe data Text, namun isi datanya sudah fix, misal Jenis Kelamin, Kategori, dan sejenisnya. Kasus seperti itu bisa menggunakan tipe data Enum. Tipe data Enum harus dibuat terlebih dahulu, dan ditentukan Value yang diperbolehkan
+
+Untuk membuat tipe data enum, kita bisa menggunakan perintah SQL:
+```sql
+CREATE TYPE NAMA_ENUM AS ENUM ('VALUE1, ‘VALUE2’, 'VALUE3');
+```
+
+#### Tipe data lainnya 
+
+Sebenarnya masih banyak jenis tipe data yang lain yang didukung oleh PostgreSQL, namun itu bisa kita pelajari jika memang ada kebutuhan spesifik. Seperti misal tipe data binary, json, xml dan lain-lain. Dokumentasi lengkapnya [disini](https://www.postgresql.org/docs/current/datatype.html).
+</details>
+
+
+
+
+<!-- Materi table  -->
+<details>
+<summary>00:59:56 - Table </summary>
+
+Sebelum kita bisa memasukkan data ke tabel, kita wajib terlebih dahulu membuat tabelnya terlebih dahulu. Dan tiap tabel yang kita buat, wajib ditentukan kolom-kolom nya, dan tipe data tiap kolom nya. Kita juga bisa mengubah tabel yang sudah terlanjur dibuat, seperti menambah kolom baru, mengubah kolom yang sudah ada, atau menghapus kolom. 
+
+```sql
+-- membuat table
+create table barang(
+	kode INT not null,
+	name varchar(100) not null,
+	harga int not null default 1000,
+	jumlah int not null default 0,
+	waktu_dibuat TIMESTAMP not null default current_timestamp 
+);
+-- merubah table yang sudah ada
+alter table barang
+add column deskripsi text;
+```
+</details>
+
+
+
+
+<!-- Materi insert dan select -->
+<details>
+<summary> 01:15:27 - Insert & Select Data </summary>
+
+#### Insert Data 
+
+Untuk memasukkan data kedalam tabel, kita bisa menggunakan perintah SQL yang bernama **INSERT**. Contoh query insert data ke table:
+
+```sql 
+insert into products(id, name, price, quantity)
+values('P0001','Mie Ayam Original',15000, 100);
+
+insert into products(id, name, description, price, quantity)
+values('P0002','Mie Ayam Baso Tahu', 'Mie Ayam original + baso tahu', 20000, 100);
+-- contoh insert multple data
+insert into products(id, name, price, quantity)
+values('P0003','Mie Ayam Ceker',20000, 100),
+	('P0004','Mie Ayam Spesial',25000, 100),
+	('P0005','Mie Ayam Yamin',15000, 100);
+
+```
+
+#### Select Data 
+
+Untuk mengambil data di tabel, kita bisa menggunakan SQL dengan kata kunci **SELECT**. SELECT bisa digunakan untuk mengambil semua kolom yang ada di tabel, atau sebagian kolom saja. Jika kita ingin mengambil semua kolom, kita bisa gunakan karakter * (bintang). Jika kita hanya ingin mengambil beberapa kolom saja, kita bisa sebutkan nama-nama kolom yang ingin kita ambil datanya. 
+
+```sql
+-- select semua data menggunakan bintang 
+select * from products;
+-- select kolom tertentu saja
+select id, name, price, quantity from products;
+
+```
+</details>
+
+
+
+
+<!-- Materi primary key -->
+<details>
+<summary> 01:26:42 - Primary Key </summary>
+
+Primary key adalah sebuah kolom yang kita tunjuk sebagai id dari tabel tersebut. Primary key adalah identitas untuk tiap baris data di dalam tabel. Primary key harus unik, tidak boleh ada data dengan primary key yang sama. Contoh membuat table ``products`` dengan primary key ``id``:
+
+```sql 
+-- membuat table baru dengan primary key
+create table products(
+	id VARCHAR(10) not null,
+	name VARCHAR(100) not null,
+	description text, 
+	price int not null,
+	quantity int not null default 0,
+	created_at TIMESTAMP not null default CURRENT_TIMESTAMP, 
+	primary key (id)
+);
+-- menabahkan primary key pada table yang sudah ada
+alter table products add primary key (id);
+```
+</details>
+
+
+
+
+<!-- Materi where clause  -->
+<details>
+<summary> 01:29:58 - Where Clause</summary>
+
+Saat mengambil data menggunakan perintah SQL SELECT, kadang kita ingin melakukan pencarian data. Misal, kita ingin mengambil data barang yang harganya 1jt, atau mengambil data barang yang quantity nya 0 (stok nya kosong). Hal ini bisa kita lakukan dengan **WHERE clause** setelah perintah **SELECT**.
+```sql 
+-- contoh 1
+select * from products where name='Mie Ayam Spesial';
+-- contoh 2 
+select id, name, price, quantity from products where price=20000;
+-- contoh 3
+select id, name, price, quantity from products where id='P0004';
+```
+</details>
+
+
+
+
+<!-- Materi update & delete -->
+<details>
+<summary>01:32:28 - Update & delete  </summary>
+
+Untuk mengubah data di tabel, kita bisa menggunakan perintah SQL UPDATE. Saat menggunakan SQL UPDATE, kita harus memberi tahu data mana yang akan di update dengan WHERE clause.
+
+> ⚠️Hati-hati ketika meng-update data di table, jika sampai WHERE clause nya salah, bisa-bisa kita malah meng-update seluruh data di tabel
+
+```sql
+-- contoh update data P0001, set categorynya menjadi makanan
+update products set category = 'makanan' where id = 'P0001';
+
+-- contoh mengubah beberapa kolom sekaligus
+update products 
+	set category = 'makanan',
+	description = 'mie ayam + ceker'
+where id = 'P0003';
+
+-- contoh mengubah dengan value dikolom
+update products set price = price + 5000 where id = 'P0004';
+```
+
+#### DELETE data 
+
+Setelah kita tahu cara menambah, mengubah dan mengambil data di tabel, terakhir yang perlu kita ketahui adalah menghapus data di table. Untuk menghapus data di table, kita bisa menggunakan perintah SQL DELETE. Perintah SQL DELETE sama seperti UPDATE, kita perlu memberi tahu data mana yang akan di hapus dengan WHERE clause. 
+
+> ⚠️Hati-hati, jangan sampai salah menentukan WHERE clause, karena jika salah, bisa-bisa kita akan menghapus seluruh data di table
+
+```sql
+-- delete data P0009 dari table products
+delete from products 
+where id = 'P0009';
+```
+</details>
+
 
 
 
