@@ -28,6 +28,8 @@ comand cmd ganti db (setelah login) : "\c nama_database"
 
 Melihat list table di database : "\dt"   
 
+Melihat strukture table di database : "\d table_name"
+
 Backup database ke file :
 pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --format=plain --file=Users/yourname/backup.sql
 
