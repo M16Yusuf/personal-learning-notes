@@ -2,6 +2,5 @@
 
 | No |                             list                                    |
 | -- | ------------------------------------------------------------------- |
-| 1  | [Struktur Data](#1-struktur-data) |
-| 2  | [postgres SQL](https://github.com/M16Yusuf/personal-learning-notes/blob/main/postgresql/postgres.md)       |
-
+| 1  | [postgres SQL](https://github.com/M16Yusuf/personal-learning-notes/blob/main/postgresql/postgres.md)       |
+| 2  | [Docker](https://github.com/M16Yusuf/personal-learning-notes/blob/main/docker/docker.md) |
