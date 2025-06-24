@@ -272,7 +272,7 @@ docker container create --name smallnginx --memory 100m --cpus 0.5 --publish 808
 
 Bind Mounts merupakan kemampuan melakukan mounting (sharing) file atau folder yang terdapat di sistem host ke container yang terdapat di docker. <mark> Fitur ini sangat berguna ketika misal kita ingin mengirim konfigurasi dari luar container, atau misal menyimpan data yang dibuat di aplikasi di dalam container ke dalam folder di sistem host </mark>. Jika file atau folder tidak ada di sistem host, secara otomatis akan dibuatkan oleh Docker.
 
-Untuk melakukan mounting, kita bisa menggunakan parameter ``--mount`` ketika membuat container. Isi dari parameter --mount memiliki aturan <span style="background-color: #FFFF00">Marked text</span>tersendiri.
+Untuk melakukan mounting, kita bisa menggunakan parameter ``--mount`` ketika membuat container. Isi dari parameter --mount memiliki aturan <span style="background-color: #FFFF00">Marked text</span> tersendiri.
 
 ##### Parameter Mount 
 
