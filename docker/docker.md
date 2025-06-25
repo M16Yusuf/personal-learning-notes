@@ -6,8 +6,8 @@
 | Materi            |    Link youtube    |        slide        |
 | ----------------- | ------------------ | ------------------- |
 | [Docker dasar ](#1-docker-dasar) | [yt Docker dasar](https://youtu.be/3_yxVjV88Zk?si=gRNTgPAG723_Ncxu) | [slide docker dasar](https://docs.google.com/presentation/d/1LoCIoqR68t-y7P7eOs_TVoooZy4mq-tc2cwInQAtfy0/edit?slide=id.gcfdc6d4495_0_377#slide=id.gcfdc6d4495_0_377) |
-| [Docker Dockerfile](#2-docker-dockerfile)  |  |    |
-| [Docker Compose](#3-docker-composer) |  |    |
+| [Docker Dockerfile](#2-docker-dockerfile)  | [yt docker dockerfile](https://youtu.be/sazoz5mnLLo?si=CkXQXm-7rVDOYe1m) |  [slide docker dockerfile](https://docs.google.com/presentation/d/1bW0-88g_s54-X_rBLaZ-N2EhW3HngAZSN6UInyBlIn8/edit?usp=sharing)  |
+| [Docker Compose](#3-docker-composer) | [yt docker compose](https://youtu.be/Vw0CAlzKe5I?si=vhfnVyYMo3V7Y2Sa)  |  [slide docker compose](https://docs.google.com/presentation/d/1xBHSvVuOA4boC5OBlzIl5VACpahpUzZ9cKhbXqLQKdE/edit?usp=sharing)  |
 
 
 <h2 id="1-docker-dasar"> DOCKER DASAR </h2>
