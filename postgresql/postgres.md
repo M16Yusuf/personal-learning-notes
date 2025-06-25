@@ -1,10 +1,15 @@
-# Postgres SQL
+# Postgres SQL 🐘
+
+![postgre](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
 Catatan belajar postgresql 
 <details> 
 <summary> Sumber pembelajaran dari yt Programmer Zaman Now (Click to expand!)  </summary>
 
+link youtube :
 https://youtu.be/iEeveYoD0SA?si=wGV7oYYJ0rdBuUWG
+link slide :
+https://docs.google.com/presentation/d/1OEkr3TlSUwMPSw5g-KjE55nA9H-Y66lo-jKv4QbzlpM/edit?usp=sharing
 
 </details>
 
@@ -38,6 +43,8 @@ psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname -
 ```
 
 <!-- Materi tipe data -->
+#### Tipe Data
+
 <details>
 <summary> 00:41:05 - Tipe Data </summary>
 
@@ -88,6 +95,8 @@ Sebenarnya masih banyak jenis tipe data yang lain yang didukung oleh PostgreSQL,
 
 
 <!-- Materi table  -->
+#### Table
+
 <details>
 <summary>00:59:56 - Table </summary>
 
@@ -112,6 +121,8 @@ add column deskripsi text;
 
 
 <!-- Materi insert dan select -->
+#### Insert & Select Data
+
 <details>
 <summary> 01:15:27 - Insert & Select Data </summary>
 
@@ -150,6 +161,8 @@ select id, name, price, quantity from products;
 
 
 <!-- Materi primary key -->
+#### Primary Key
+
 <details>
 <summary> 01:26:42 - Primary Key </summary>
 
@@ -175,6 +188,8 @@ alter table products add primary key (id);
 
 
 <!-- Materi where clause  -->
+#### Where Clause
+
 <details>
 <summary> 01:29:58 - Where Clause</summary>
 
@@ -193,6 +208,8 @@ select id, name, price, quantity from products where id='P0004';
 
 
 <!-- Materi update & delete -->
+#### Update & delete
+
 <details>
 <summary>01:32:28 - Update & delete  </summary>
 
@@ -231,6 +248,8 @@ where id = 'P0009';
 
 
 <!-- Materi alias  -->
+#### Alias
+
 <details>
 <summary> 01:43:58 - Alias</summary>
 
@@ -248,6 +267,8 @@ from products as p;
 
 
 <!-- Materi where operator -->
+#### where operator
+
 <details>
 <summary> 01:49:42 - Where Operator (Perbandingan, AND OR, like, null, between, IN)</summary>
 
@@ -335,6 +356,8 @@ select * from products where category in ('makanan', 'minuman');
 
 
 <!-- Order by clause -->
+#### Order By Clause
+
 <details>
 <summary> 02:16:06 - Order By Clause </summary>
 
@@ -349,6 +372,8 @@ select * from products order by price asc, id desc;
 
 
 <!-- materi limit clause -->
+#### Limit Clause
+
 <details>
 <summary>02:18:41 - Limit Clause </summary>
 
@@ -366,6 +391,8 @@ select * from products where price > 0 order by price asc, id desc limit 2 offse
 
 
 <!-- materi distinct  -->
+#### Select Distinct Data
+
 <details>
 <summary> 02:23:20 - Select Distinct Data</summary>
 
@@ -385,6 +412,8 @@ select distinct category from products;
 
 
 <!-- Materi numeric function -->
+#### Numeric Function
+
 <details>
 <summary> 02:25:03 - Numeric Function</summary>
 
@@ -417,6 +446,8 @@ select id, name, power(quantity, 2) as quantity_power_2 from products;
 
 
 <!-- Materi auto increment / serial -->
+#### Auto Increment 
+
 <details>
 <summary> 02:31:36 - Auto Increment </summary>
 
@@ -442,6 +473,8 @@ select currval('admin_id_seq');
 
 
 <!-- Materi sequence  -->
+#### Sequence 
+
 <details>
 <summary> 02:38:29 - Sequence </summary>
 
@@ -476,6 +509,8 @@ create table admin(
 
 
 <!-- materi string function -->
+#### String Function 
+
 <details>
 <summary>02:44:47 - String Function </summary>
 
@@ -492,6 +527,8 @@ select id, lower(name), length(name), lower(description) from products;
 
 
 <!-- Materi date and time function -->
+#### Date dan Time Function
+
 <details>
 <summary> 02:47:22 - Date dan Time Function</summary>
 
@@ -507,6 +544,8 @@ select id, extract(year from created_at), extract(month from created_at) from pr
 
 
 <!-- Materi flow control function -->
+#### Flow Control Function
+
 <details>
 <summary> 02:50:24 - Flow Control Function </summary>
 
@@ -544,6 +583,8 @@ from products;
 
 
 <!-- Materi agregate function -->
+#### Aggregate Function
+
 <details>
 <summary>02:58:18 - Aggregate Function </summary>
 
@@ -566,6 +607,8 @@ select max(price) from products;
 
 
 <!-- Materi Grouping  -->
+#### Grouping
+
 <details>
 <summary> 03:01:33 - Grouping </summary>
 
@@ -607,6 +650,8 @@ from products group by category having avg(price) >= 20000;
 
 
 <!-- constraint -->
+#### Constraint
+
 <details>
 <summary> 03:09:14 - Constraint </summary>
 
@@ -643,6 +688,8 @@ alter table products
 
 
 <!-- Materi index -->
+#### Index
+
 <details>
 <summary> 03:20:44 - Index </summary>
 
@@ -672,6 +719,8 @@ select * from sellers where id=1 or name ='galeri Tono';
 
 
 <!-- full text search  -->
+#### Full Text Search 
+
 <details>
 <summary> 03:36:03 - Full Text Search </summary>
 
@@ -718,6 +767,8 @@ select * from products where name @@ to_tsquery('''mie ayam'''); -- '' '' mencar
 
 
 <!-- Materi table relationship -->
+#### Table Relationship
+
 <details>
 <summary> 03:49:16 - Table Relationship </summary>
 
@@ -760,6 +811,8 @@ Selain ``restrict`` dan ``cascade``, ada beberapa sintaks dengan fungsinya masin
 
 
 <!-- materi join -->
+#### Join
+
 <details>
 <summary> 04:02:47 - Join </summary>
 
@@ -782,6 +835,8 @@ from wishlist as w
 
 
 <!-- Materi One to one ralationship -->
+#### One to One Relationship
+
 <details>
 <summary>04:11:54 - One to One Relationship</summary>
 
@@ -814,6 +869,8 @@ create table wallet (
 
 
 <!-- Materi one to Many -->
+#### One to Many Relationship
+
 <details>
 <summary> 04:18:17 - One to Many Relationship
 </summary>
@@ -845,6 +902,8 @@ add constraint fk_product_category foreign key(id_category) references categorie
 
 
 <!-- Materi Many to Many relationship -->
+#### Many to Many Relationship
+
 <details> 
 <summary> 04:25:52 - Many to Many Relationship </summary>
 
@@ -887,6 +946,8 @@ create table orders_detail(
 
 
 <!-- Materi jenis-jenis join -->
+#### Jenis Jenis Join
+
 <details>
 <summary> 04:40:55 - Jenis Jenis Join </summary>
 
@@ -944,6 +1005,8 @@ full join products on products.id_category = categories.id;
 
 
 <!-- Materi Subqueries -->
+#### Subqueries
+
 <details>
 <summary> 04:50:05 - Subqueries </summary>
 
@@ -965,6 +1028,8 @@ from categories join products on products.id_category = categories.id) as contoh
 
 
 <!-- Materi set operator -->
+#### Set Operator
+
 <details>
 <summary> 04:54:46 - Set Operator </summary>
 
@@ -1029,6 +1094,8 @@ Query tersebut untuk menghitung duplikat email pada table customer dan guestbook
 
 
 <!-- Materi transaction -->
+#### Transaction
+
 <details>
 <summary> 05:05:28 - Transaction </summary>
 
@@ -1072,6 +1139,8 @@ commit;
 
 
 <!-- Materi Locking -->
+#### Locking
+
 <details>
 <summary> 05:16:22 - Locking </summary>
 
@@ -1122,6 +1191,8 @@ Untungnya postgresql bisa mendeteksi proses deadlock, maka jika terjadi hal seru
 
 
 <!-- Materi schema -->
+#### Schema
+
 <details>
 <summary>05:30:41 - Schema </summary>
 Di POSTGRESQL terdapat fitur schema, secara default saat membuat  table sebenarnya kita membuat dan menyimpan data table kita di dalam schema public. Gambarannya sama seperti kita menyimpan file-file didalam sebuah folder. 
@@ -1163,6 +1234,8 @@ values  ('iphone'),
 
 
 <!-- materi user management -->
+#### User Management 
+
 <details>
 <summary> 05:41:29 - User Management </summary>
 Secara default user utama yang dibuat otomatis saat installasi postgres (nama user linux/mac) itu defaultnya memiliki hak akses super administrator. Proses memanage user hanya bisa dilakukan oleh user yang memiliki hak akses super administrator.
@@ -1199,6 +1272,8 @@ grant insert, update, select on customer to anisa;
 
 
 <!-- Materi backup -->
+#### Backup Database
+
 <details>
 <summary>05:53:58 - Backup Database </summary>
 
@@ -1214,6 +1289,8 @@ pg_dump --host=localhost --port=5432 --dbname=belajar --username=yourname --form
 
 
 <!-- materi restore -->
+#### Restore Database
+
 <details>
 <summary>05:59:20 - Restore Database </summary>
 
@@ -1233,6 +1310,8 @@ psql --host=localhost --port=5432 --dbname=belajar_restore --username=yourname -
 
 
 <!-- materi selanjutnya -->
+#### Materi Selanjutnya
+
 <details>
 <summary> 06:03:54 - Materi Selanjutnya</summary>
 Postgresql dah tamat materi selanjutnya:
