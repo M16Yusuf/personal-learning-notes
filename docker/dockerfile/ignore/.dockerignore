@@ -1,0 +1,4 @@
+# ignore semua file extensi log di folder text
+text/*.log
+# ignore folder temp
+text/temp

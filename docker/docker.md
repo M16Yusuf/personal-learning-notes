@@ -653,8 +653,398 @@ docker system prune
 
 
 
-
+<!-- video 2 -->
 <h2 id="2-docker-dockerfile"> DOCKER DOCKERFILE </h2>
+
+
+<!-- materi dockerfile -->
+### Pengenalan Dockerfile 
+
+<details>
+<summary> 00:01:39 - Pengenalan Dockerfile </summary>
+
+<mark> Dockerfile adalah file text yang berisi semua perintah yang bisa kita gunakan untuk membuat sebuah Docker Image </mark>. Anggap saja semua instruksi untuk, menjalankan aplikasi kita, kita simpan di dalam Dockerfile, nanti Dockerfile tersebut akan dieksekusi sebagai perintah untuk membuat Docker Image. 
+
+
+##### Docker Build 
+
+
+Untuk membuat Docker Image dari Dockerfile, kita bisa menggunakan perintah docker build. Saat membuat Docker Image dengan docker build, nama image secara otomatis akan dibuat random, dan biasanya kita ingin menambahkan nama/tag pada image nya, kita bisa mengubahnya dengan menambahkan perintah ``-t``. Misal berikut adalah contoh cara menggunakan docker build :
+
+```sh
+# docker build -t nama_image:tag_ver direktor_Dockerfile
+docker build -t khannedy/app:1.0.0  folder-dockerfile
+docker build -t khannedy/app:1.0.0 -t khannedy/app:latest folder-dockerfile
+```
+</details>
+
+
+
+
+
+<!-- Materi docker file format -->
+### Dockerfile Format
+
+<details>
+<summary>  00:06:07 - Dockerfile Format </summary>
+
+Seperti namanya, Dockerfile biasanya dibuat dalam sebuah file dengan nama Dockerfile, tidak memiliki extension apapun
+> ⚠️ Walaupun sebenarnya bisa saja kita membuat dengan nama lain, namu direkomendasikan menggunakan nama Dockerfile
+
+Secara sederhana berikut adalah format untuk file Dockerfile :
+
+
+* ``#`` digunakan untuk menambah komentar, kode dalam baris tersebut secara otomatis dianggap komentar
+
+```Dockerfile
+# Komentar
+INSTRUCTION arguments
+
+```
+
+* **INSTRUCTION** adalah perintah yang digunakan di Dockerfile, ada banyak perintah yang tersedia, dan penulisan perintahnya case insensitive, sehingga kita bisa gunakan huruf besar atau kecil. <mark> Namun rekomendasinya adalah menggunakan UPPPER CASE</mark>.
+
+* Arguments adalah data argument untuk INSTRUCTION, yang menyesuaikan dengan jenis INSTRUCTION yang digunakan.
+</details>
+
+
+
+
+
+<!-- materi form instruction -->
+### From Instruction
+
+<details>
+<summary> 00:09:37 - From Instruction</summary>
+
+Saat kita membuat Docker Image, biasanya perintah pertama adalah melakukan build stage dengan instruksi FROM. **FROM** digunakan untuk membuat build stage dari image yang kita tentukan.
+
+> Biasanya, jarang sekali kita akan membuat Docker Image dari scratch (kosongan), biasanya kita akan membuat Docker Image dari Docker Image lain yang sudah ada.
+
+Untuk menggunakan FROM, kita bisa gunakan perintah :
+
+```Dockerfile
+FROM image:version
+# contoh : menggunakan linux alphine versi 3
+FROM alphine:3
+```
+
+Setelah menyiapkan/menyimpan from diatas didalam sebuah file ``Dockerfile`` maka selanjutnya untuk proses membuat docker image dari from diatas kita bisa menggunakan perintah terminal berikut untuk membuild imagenya: 
+
+```sh
+# docker build -t nama_akun_dockerhub/nama_image:tag_ver dir_Dockerfile
+docker build -t m16yusuf/from from
+```
+</details>
+
+
+
+
+
+
+<!-- 00:18:14 - Run Instruction -->
+### Run Instruction
+
+<details>
+<summary> 00:18:14 - Run Instruction </summary>
+
+<mark> RUN adalah sebuah instruksi untuk mengeksekusi perintah di dalam image pada saat build stage.</mark> Hasil perintah RUN akan di commit dalam perubahan image tersebut, jadi perintah RUN akan dieksekusi pada saat proses docker build saja, setelah menjadi Docker Image, perintah tersebut tidak akan dijalankan lagi. Jadi ketika kita menjalankan Docker Container dari Image tersebut, maka perintah RUN tidak akan dijalankan lagi.
+
+Perintah RUN memiliki 2 format :
+```Dockerfile
+# contoh run singgle command
+RUN command
+# contoh run dalam bentuk array
+RUN [“executable”, “argument”, “...”]
+```
+
+```Dockerfile
+# PRAKTEK
+# membuat direktori baru run run/Dockerfile
+# dengan isi perintah berikut:
+FROM alpine:3
+
+RUN mkdir hello
+RUN echo "Hello world" > "hello/world.txt"
+RUN cat "hello/world.txt"
+```
+
+Lalu build Dockerfile tersebut diterminal dengan cara berikut:
+
+```sh
+docker build -t m16yusuf/run run
+```
+
+Secara default, di docker terbaru tidak akan menampilkan tulisan detail dari build-nya. Jika kita ingin menampilkan detailnya, kita bisa gunakan perintah :
+
+```sh
+--progress=plain
+```
+
+Selain itu juga docker build juga melakukan cache, jika kita ingin mengulangi lagi tanpa menggunakan cache, kita bisa gunakan perintah 
+
+```sh
+--no-cache
+```
+
+Contoh build image dengan menampilkan progress dan tanpa caching :
+
+```sh
+docker build -t m16yusuf/run run --progress=plain --no-cache
+```
+</details>
+
+
+
+
+
+
+<!-- Materi 00:28:29 - Command Instruction -->
+### Command Instruction 
+
+<details>
+<summary> 00:28:29 - Command Instruction </summary>
+
+<mark> CMD atau Command, merupakan instruksi yang digunakan ketika Docker Container berjalan</mark>. CMD tidak akan dijalankan ketika proses build, namun dijalankan ketika Docker Container berjalan. 
+
+<mark> Dalam Dockerfile, kita tidak bisa menambah lebih dari satu instruksi CMD</mark>, jika kita tambahkan lebih dari satu instruksi CMD, maka yang akan digunakan untuk menjalankan Docker Container adalah instruksi CMD yang terakhir.
+
+Perintah CMD memiliki beberapa format :
+
+```Dockerfile
+CMD command param param
+CMD [“executable”, “param”, “param”]
+# akan menggunakan executable ENTRY POINT, yang akan dibahas di chapter terpisah
+CMD [“param”, “param”]
+```
+
+Praktek :
+
+```sh
+# membuat dockerfile baru di command/Dockerfile dengan isi:
+FROM alpine:3
+
+RUN mkdir hello
+RUN echo "Hello world" > "hello/world.txt"
+
+CMD cat "hello/world.txt"
+
+# build Dockerfile tersebut di terminal 
+docker build -t m16yusuf/command command
+
+# perintah CMDnya tidak akan terlihat saat proses build
+# tapi CMD bisa dilihat pada saat imagenya di inspect
+# inspect : melihat detail imagenya
+docker image inspect m16yusuf/command
+
+# untuk lebih detailnya dicoba dicontainer
+docker container create --name command m16yusuf/command
+docker container start command 
+docker container logs command  
+```
+</details>
+
+
+
+
+
+
+<!-- label Instruction -->
+### Label Instruction
+
+<details>
+<summary> 00:36:32 - Label Instruction </summary>
+
+Instruksi LABEL merupakan instruksi yang digunakan untuk menambahkan metadata ke dalam Docker Image yang kita buat. <mark> Metadata adalah informasi tambahan, misal seperti nama aplikasi, pembuat, website, perusahaan, lisensi dan lain-lain</mark>. Metadata hanya berguna sebagai informasi saja, tidak akan digunakan ketika kita menjalankan Docker Container.
+
+Berikut adalah format instruksi LABEL:
+
+```Dockerfile
+LABEL <key>=<value>
+LABEL <key1>=<value1> <key2>=<value2> …
+```
+
+Contoh praktek membuat ``LABEL`` pada dockerfile:
+
+```Dockerfile
+FROM alpine:3
+
+LABEL author="Muhammad Yusuf"
+LABEL company="Yusuf zaman now" website="https://linktr.ee/m16yusuf"
+
+RUN mkdir hello
+RUN echo "Hello world" > "hello/world.txt"
+
+CMD cat "hello/world.txt"
+```
+
+Lalu build docker file tersebut menjadi image dengan perintah terminal berikut:
+
+```sh
+docker build -t m16yusuf/label label 
+
+# saat image berhasil di build dan melakukan inspek 
+# maka informasi label sebelumnya akan muncul
+docker image inspect m16yusuf/label
+```
+
+
+</details>
+
+
+
+
+
+
+<!-- Materi add instruction -->
+### Add Instruction 
+
+<details>
+<summary> 00:41:22 - Add Instruction </summary>
+
+<mark> ADD adalah instruksi yang dapat digunakan untuk menambahkan file dari source ke dalam folder destination di Docker Image</mark>. Perintah ADD bisa mendeteksi apakah sebuah file source merupakan file kompres seperti tar.gz, gzip, dan lain-lain. Jika mendeteksi file source adalah berupa file kompress, maka secara otomatis file tersebut akan di extract dalam folder destination.
+
+Perintah ADD juga bisa mendukung banyak penambahan file sekaligus. Penambahan banyak file sekaligus di instruksi ADD menggunakan Pattern di Go-Lang : https://pkg.go.dev/path/filepath#Match 
+
+Instruksi ADD memiliki format sebagai berikut :
+
+```Dockerfile
+ADD source destination
+# Contoh :
+ADD world.txt hello 
+# menambah file world.txt ke folder hello
+ADD *.txt hello 
+# menambah semua file .txt ke folder hello
+```
+
+Contoh praktek ``add`` buat add/Dockerfile :
+
+```Dockerfile 
+FROM alpine:3
+
+RUN mkdir hello
+ADD text/*.txt hello
+# menambahkan semua file extensi txt dari folder text
+# ke folder hello di dalam docker image yang sudah dibuat
+CMD cat "hello/world.txt"
+```
+
+build Dockerfile tersebut dan cek dengan logs container :
+```sh
+docker build -t m16yusuf/add add
+
+# build container baru dengan docker image tersebut
+# start container dan cek lognya
+docker container create --name add m16yusuf/add
+docker container start add
+docker container logs add
+```
+</details>
+
+
+
+
+
+<!-- Materi copy instruction -->
+### Copy Instruction
+
+<details>
+<summary> 00:51:16 - Copy Instruction </summary>
+
+COPY adalah instruksi yang dapat digunakan untuk menambahkan file dari source ke dalam folder destination di Docker Image.
+
+Lantas apa bedanya dengan instruksi ADD kalo begitu? COPY hanya melakukan copy file saja, sedangkan ADD selain melakukan copy, dia bisa mendownload source dari URL dan secara otomatis melakukan extract file kompres
+
+> Namun best practice nya, sebisa mungkin menggunakan COPY, jika memang butuh melakukan extract file kompres, gunakan perintah RUN dan jalankan aplikasi untuk extract file kompres tersebut.
+
+Instruksi COPY memiliki format sebagai berikut :
+```Dockerfile
+COPY source destination
+# Contoh :
+COPY world.txt hello 
+# menambah file world.txt ke folder hello
+COPY *.txt hello 
+# menambah semua file .txt ke folder hello
+```
+
+Contoh praktek copy prosesnya sama dengan contoh praktek add, membuat copy/Dockerfile :
+```Dockerfile 
+FROM alpine:3
+
+RUN mkdir hello
+COPY text/*.txt hello
+
+CMD cat "hello/pzn.txt"
+```
+
+build Dockerfile tersebut dan cek dengan logs container :
+
+```sh
+docker build -t m16yusuf/copy copy 
+
+# build container baru dengan docker image tersebut
+# start container dan cek lognya
+docker container create --name copy m16yusuf/copy
+docker container start copy
+docker container logs copy
+```
+</details>
+
+
+
+
+
+
+<!-- materi dockerignore file -->
+### .dockerignore file
+
+<details>
+<summary> 00:56:05 - Dockerignore File </summary>
+
+
+</details>
+
+
+Saat kita melakukan ADD atau COPY dari file source, pertama Docker akan membaca file yang bernama ``.dockerignore``. File ``.dockerignore`` ini seperti file ``.gitignore``, dimana kita bisa menyebutkan file-file apa saja yang ingin kita ignore (hiraukan). <mark> Artinya jika ada file yang kita sebut di dalam file .dockerignore, secara otomatis file tersebut tidak aka di ADD atau di COPY</mark>. File ``.dockerignore`` juga mendukung ignore folder atau menggunakan regular expression.
+
+##### praktek dockerignore
+
+```sh
+# membuat direktori seperti ini
+│   .dockerignore
+│   Dockerfile
+│
+└───text
+    │   app.log
+    │   sample.log
+    │   world.txt
+    │
+    └───temp
+            sample.txt
+
+
+# lalu untuk isi dari .dockerignore
+# ignore semua file extensi log di folder text
+text/*.log
+# ignore folder temp
+text/temp
+
+# lalu untuk isi dari Dockerfile
+FROM alpine:3
+RUN mkdir hello
+COPY text/* hello
+# melihat semua isi direktori hello
+CMD ls -l hello
+
+
+# build dockerfile dengan .dockerignore
+docker build -t m16yusuf/ignore ignore
+# test dengan container, start, dan cek lognya
+docker container create --name ignore m16yusuf/ignore
+docker container start ignore
+docker container logs ignore
+```
+
 
 
 
