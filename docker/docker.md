@@ -1001,10 +1001,6 @@ docker container logs copy
 <details>
 <summary> 00:56:05 - Dockerignore File </summary>
 
-
-</details>
-
-
 Saat kita melakukan ADD atau COPY dari file source, pertama Docker akan membaca file yang bernama ``.dockerignore``. File ``.dockerignore`` ini seperti file ``.gitignore``, dimana kita bisa menyebutkan file-file apa saja yang ingin kita ignore (hiraukan). <mark> Artinya jika ada file yang kita sebut di dalam file .dockerignore, secara otomatis file tersebut tidak aka di ADD atau di COPY</mark>. File ``.dockerignore`` juga mendukung ignore folder atau menggunakan regular expression.
 
 ##### praktek dockerignore
@@ -1043,7 +1039,30 @@ docker build -t m16yusuf/ignore ignore
 docker container create --name ignore m16yusuf/ignore
 docker container start ignore
 docker container logs ignore
+# hasil log manampilkan isi direktori hello 
+# yang hanya ada world.txt saja
 ```
+</details>
+
+
+
+
+
+
+<!-- materi expose instruction -->
+### Expose Instruction
+
+<details>
+<summary> 01:02:46 - Expose Instruction </summary>
+<img src="" style="width:500px">
+</details>
+
+
+
+
+
+
+
 
 
 
